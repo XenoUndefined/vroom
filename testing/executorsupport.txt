@@ -1,0 +1,15 @@
+if isfolder("Test") then
+    delfolder("Test")
+end
+wait(0.1)
+local suc, res = pcall(function()
+    makefolder("Test")
+    wait(0.3)
+    if isfolder("Test") then
+        game.Players.LocalPlayer:Kick("Executor supports SS!")
+    end
+end)
+wait(0.5)
+if not suc then
+    game.Players.LocalPlayer:Kick("Executor doesnt support SS :(")
+end
