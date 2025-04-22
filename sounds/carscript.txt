@@ -1,0 +1,78 @@
+-- notification function
+local function notification(title, message, duration)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = title,
+        Text = message,
+        Duration = duration
+    })
+end
+
+-- variables
+local plr = game.Players.LocalPlayer
+local char = plr.Character or plr.CharacterAdded:Wait()
+local hum = char:WaitForChild("Humanoid")
+local hrp = char:WaitForChild("HumanoidRootPart")
+
+-- dev controls
+local killfiles = false
+
+-- file downloading and folder management
+if killfiles then
+    if isfolder("vroom") then
+        delfolder("vroom")
+        repeat wait(0.01) until not isfolder("vroom")
+        notification("Killfiles", "Success!", 2)
+    end
+end
+
+if not isfolder("vroom") then makefolder("vroom") end
+if not isfolder("vroom/sounds") then makefolder("vroom/sounds") end
+
+if not isfile("vroom/sounds/carcrash.mp3") then
+    writefile("vroom/sounds/carcrash.mp3", game:HttpGet("https://github.com/XenoUndefined/vroom/raw/refs/heads/main/sounds/carcrash.mp3", true))
+end
+
+if not isfile("vroom/sounds/driving.mp3") then
+    writefile("vroom/sounds/driving.mp3", game:HttpGet("https://github.com/XenoUndefined/vroom/raw/refs/heads/main/sounds/driving.mp3", true))
+end
+
+-- sound controller
+if isfile("vroom/sounds/driving.mp3") and isfile("vroom/sounds/carcrash.mp3") then
+    local drive = Instance.new("Sound")
+    drive.Name = "Drive"
+    drive.Parent = hrp
+    drive.SoundId = getcustomasset("vroom/sounds/driving.mp3")
+    drive.Volume = 15
+    drive.Looped = true
+    drive:Play()
+end
+
+-- movement + crash logic
+local crashed = false
+
+hrp.Touched:Connect(function(hit)
+    if not crashed and hit.Parent:FindFirstChild("Humanoid") and hit.Parent ~= char then
+        crashed = true
+        hum.Health = 0
+    end
+end)
+
+while hum.Health > 0 do
+    wait(0.01)
+    hrp.CFrame = hrp.CFrame + hrp.CFrame.LookVector * 0.8
+    hum.WalkSpeed = 0.01
+end
+
+-- crash
+if crashed then
+    local driveSound = hrp:FindFirstChild("Drive")
+    if driveSound then driveSound:Destroy() end
+
+    local explosion = Instance.new("Sound")
+    explosion.Name = "Crash"
+    explosion.Parent = hrp
+    explosion.SoundId = getcustomasset("vroom/sounds/carcrash.mp3")
+    explosion.Volume = 20
+    explosion.Looped = false
+    explosion:Play()
+end
