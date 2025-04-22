@@ -13,7 +13,7 @@ Other versions can be found [at this link](https://github.com/XenoUndefined/vroo
 
 > [!TIP]
 > To check if your executor can run SS, you can try running this code below
-```lua
+> ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/XenoUndefined/vroom/refs/heads/main/testing/executorsupport.txt",true))()
 ```
 ## Screenshots
