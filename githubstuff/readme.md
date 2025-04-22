@@ -10,6 +10,7 @@ Other versions can be found [at this link](https://github.com/XenoUndefined/vroo
 > Make sure your executor can support Synapse Syntax, Such as **makefolder, isfolder, delfolder, delfile, ETC**
 > 
 > You may be kicked if it doesnt support SS (Synapse Syntax)
+
 > [!TIP]
 > To check if your executor can run SS, you can try running this code below
 ```lua
